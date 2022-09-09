@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/upComingMoviesFragment"
+        android:enabled="true"
+        android:title="Upcoming"
+        />
+
+    <item
+        android:id="@+id/inTheatresFragment"
+        android:enabled="true"
+        android:title="In Theatre"
+        />
+
+    <item
+        android:id="@+id/watchlistFragment"
+        android:enabled="true"
+        android:title="Watchlist"
+        />
+
+    <item
+        android:id="@+id/seenFragment"
+        android:enabled="true"
+        android:title="Seen"
+        />
+
+
+
+</menu>

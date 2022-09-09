@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/upComingMoviesFragment">
+
+    <fragment
+        android:id="@+id/inTheatresFragment"
+        android:name="be.bf.android.mymovies.lists.InTheatresFragment"
+        android:label="fragment_in_theatres"
+        tools:layout="@layout/fragment_in_theatres" />
+    <fragment
+        android:id="@+id/upComingMoviesFragment"
+        android:name="be.bf.android.mymovies.lists.UpComingMoviesFragment"
+        android:label="fragment_up_coming_movies"
+        tools:layout="@layout/fragment_up_coming_movies" />
+    <fragment
+        android:id="@+id/seenFragment"
+        android:name="be.bf.android.mymovies.lists.SeenFragment"
+        android:label="fragment_seen"
+        tools:layout="@layout/fragment_seen" />
+    <fragment
+        android:id="@+id/watchlistFragment"
+        android:name="be.bf.android.mymovies.lists.WatchlistFragment"
+        android:label="fragment_watchlist"
+        tools:layout="@layout/fragment_watchlist" />
+</navigation>
