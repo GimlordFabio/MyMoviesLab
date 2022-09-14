@@ -14,10 +14,7 @@
         android:theme="@style/Theme.MyMovies"
         tools:targetApi="31">
         <activity
-            android:name=".DetailsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".details.DetailsActivity"
             android:exported="false" />
         <activity
             android:name=".lists.MainActivity"
