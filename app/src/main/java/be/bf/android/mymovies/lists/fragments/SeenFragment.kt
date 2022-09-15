@@ -1,4 +1,4 @@
-package be.bf.android.mymovies.lists
+package be.bf.android.mymovies.lists.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

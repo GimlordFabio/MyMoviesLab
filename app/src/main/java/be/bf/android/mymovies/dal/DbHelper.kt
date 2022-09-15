@@ -26,9 +26,9 @@ class DbHelper (context: Context): SQLiteOpenHelper (context, DB_NAME, null, DB_
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
 
         p0?.execSQL(UserDAO.UPDATE_QUERY)
+        p0?.execSQL(IconeDAO.UPDATE_QUERY)
+        p0?.execSQL(TagDAO.UPDATE_QUERY)
         p0?.execSQL(MovieDAO.UPDATE_QUERY)
         p0?.execSQL(NoteDAO.UPDATE_QUERY)
-        p0?.execSQL(TagDAO.UPDATE_QUERY)
-        p0?.execSQL(IconeDAO.UPDATE_QUERY)
     }
 }

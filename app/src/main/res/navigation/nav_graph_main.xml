@@ -9,22 +9,22 @@
 
     <fragment
         android:id="@+id/inTheatresFragment"
-        android:name="be.bf.android.mymovies.lists.InTheatresFragment"
+        android:name="be.bf.android.mymovies.lists.fragments.InTheatresFragment"
         android:label="fragment_in_theatres"
         tools:layout="@layout/fragment_in_theatres" />
     <fragment
         android:id="@+id/upComingMoviesFragment"
-        android:name="be.bf.android.mymovies.lists.UpComingMoviesFragment"
+        android:name="be.bf.android.mymovies.lists.fragments.UpComingMoviesFragment"
         android:label="fragment_up_coming_movies"
         tools:layout="@layout/fragment_up_coming_movies" />
     <fragment
         android:id="@+id/seenFragment"
-        android:name="be.bf.android.mymovies.lists.SeenFragment"
+        android:name="be.bf.android.mymovies.lists.fragments.SeenFragment"
         android:label="fragment_seen"
         tools:layout="@layout/fragment_seen" />
     <fragment
         android:id="@+id/watchlistFragment"
-        android:name="be.bf.android.mymovies.lists.WatchlistFragment"
+        android:name="be.bf.android.mymovies.lists.fragments.WatchlistFragment"
         android:label="fragment_watchlist"
         tools:layout="@layout/fragment_watchlist" />
 </navigation>

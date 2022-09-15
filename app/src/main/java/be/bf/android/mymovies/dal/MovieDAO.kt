@@ -14,9 +14,11 @@ class MovieDAO (private val context: Context): Closeable {
         const val CREATE_QUERY: String = "CREATE TABLE movie(" +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 " title VARCHAR(50)," +
-                " rating FLOAT," +
+                " rating DOUBLE," +
                 " date VARCHAR(15)," +
-                " image VARCHAR(100)," +
+                " imageV VARCHAR(150)," +
+                " imageH VARCHAR(150)," +
+                " overview VARCHAR(150)," +
                 " seen INTEGER," +
                 " userId INTEGER," +
                 " tagId INTEGER" +
@@ -44,23 +46,27 @@ class MovieDAO (private val context: Context): Closeable {
         val titleColumn = cursor.getColumnIndex("title")
         val ratingColumn = cursor.getColumnIndex("rating")
         val dateColumn = cursor.getColumnIndex("date")
-        val imageColumn = cursor.getColumnIndex("image")
+        val imageVColumn = cursor.getColumnIndex("imageV")
+        val imageHColumn = cursor.getColumnIndex("imageH")
+        val overviewColumn = cursor.getColumnIndex("overview")
         val seenColumn = cursor.getColumnIndex("seen")
         val userIDColumn = cursor.getColumnIndex("userId")
         val tagIDColumn = cursor.getColumnIndex("tagId")
 
-        if (idColumn >= 0 && titleColumn >= 0 && ratingColumn >= 0 && dateColumn >= 0 && imageColumn>= 0 && seenColumn>= 0 && userIDColumn >= 0 && tagIDColumn >= 0){
+        if (idColumn >= 0 && titleColumn >= 0 && ratingColumn >= 0 && dateColumn >= 0 && imageVColumn >= 0 && imageHColumn >= 0 && overviewColumn>= 0 && seenColumn>= 0 && userIDColumn >= 0 && tagIDColumn >= 0){
 
             val id = cursor.getInt(idColumn)
             val title = cursor.getString(titleColumn)
-            val rating = cursor.getFloat(ratingColumn)
+            val rating = cursor.getDouble(ratingColumn)
             val date = cursor.getString(dateColumn)
-            val image = cursor.getString(imageColumn)
+            val imageV = cursor.getString(imageVColumn)
+            val imageH = cursor.getString(imageHColumn)
+            val overview = cursor.getString(overviewColumn)
             val seen = cursor.getInt(seenColumn)
             val userId = cursor.getInt(userIDColumn)
             val tagId = cursor.getInt(tagIDColumn)
 
-            return  Movie(id, title, rating, date, image, seen, userId, tagId)
+            return  Movie(id, title, rating, date, imageV, imageH, overview, seen, userId, tagId)
         }
         return null
     }
@@ -86,7 +92,9 @@ class MovieDAO (private val context: Context): Closeable {
         cv.put("title", movie.title)
         cv.put("rating", movie.rating)
         cv.put("date", movie.date)
-        cv.put("image", movie.image)
+        cv.put("imageV", movie.imageV)
+        cv.put("imageH", movie.imageH)
+        cv.put("overview", movie.overview)
         cv.put("seen", movie.seen)
         cv.put("userId", movie.userId)
         cv.put("tagId", movie.tagId)
@@ -104,7 +112,9 @@ class MovieDAO (private val context: Context): Closeable {
         cv.put("title", movie.title)
         cv.put("rating", movie.rating)
         cv.put("date", movie.date)
-        cv.put("image", movie.image)
+        cv.put("imageV", movie.imageV)
+        cv.put("imageH", movie.imageH)
+        cv.put("overview", movie.overview)
         cv.put("seen", movie.seen)
         cv.put("userId", movie.userId)
         cv.put("tagId", movie.tagId)

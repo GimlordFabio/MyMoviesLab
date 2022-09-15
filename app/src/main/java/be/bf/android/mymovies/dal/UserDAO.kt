@@ -13,7 +13,7 @@ class UserDAO (private val context: Context): Closeable{
 
         const val CREATE_QUERY: String = "CREATE TABLE user(" +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                " username VARCHAR(50) NOT NULL)"
+                " username VARCHAR(50) NOT NULL UNIQUE)"
 
         const val UPDATE_QUERY: String = "DROP TABLE user"
     }
