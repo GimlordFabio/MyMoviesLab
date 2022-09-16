@@ -5,7 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import be.bf.android.mymovies.R
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import be.bf.android.mymovies.databinding.FragmentInTheatresBinding
+import be.bf.android.mymovies.entities.Movie
+import be.bf.android.mymovies.lists.MainViewModel
+import be.bf.android.mymovies.lists.MovieListAdapter
 
 
 /**
@@ -13,7 +18,17 @@ import be.bf.android.mymovies.R
  * Use the [InTheatresFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
 class InTheatresFragment : Fragment() {
+
+    private var _binding : FragmentInTheatresBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: MainViewModel by activityViewModels()
+
+    private lateinit var adapter: MovieListAdapter
+
+    private val movies : MutableList<Movie> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +39,38 @@ class InTheatresFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_in_theatres, container, false)
+
+        _binding = FragmentInTheatresBinding.inflate(inflater, container, false)
+
+        setupRv()
+        bindViewModel()
+
+        return binding.root
+    }
+
+
+    private fun setupRv() {
+
+        adapter = MovieListAdapter(requireContext(), movies)
+        binding.rcInTheatres.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rcInTheatres.adapter = adapter
+    }
+
+    private fun bindViewModel() {
+
+        viewModel.MoviesInTheatre.observe(viewLifecycleOwner){
+
+            this.movies.clear()
+            this.movies.addAll(it)
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+
+    override fun onDestroyView() {
+
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

@@ -14,7 +14,7 @@
         tools:layout="@layout/fragment_in_theatres" />
     <fragment
         android:id="@+id/upComingMoviesFragment"
-        android:name="be.bf.android.mymovies.lists.fragments.UpComingMoviesFragment"
+        android:name="be.bf.android.mymovies.lists.fragments.UpcomingMoviesFragment"
         android:label="fragment_up_coming_movies"
         tools:layout="@layout/fragment_up_coming_movies" />
     <fragment

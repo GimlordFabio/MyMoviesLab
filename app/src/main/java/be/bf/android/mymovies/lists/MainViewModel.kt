@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.create
 
 class MainViewModel(): ViewModel() {
 
@@ -48,6 +49,7 @@ class MainViewModel(): ViewModel() {
     init {
         viewModelScope.launch {
             getUpcomingMovie()
+            getInTheatresMovie()
         }
     }
 
@@ -61,8 +63,8 @@ class MainViewModel(): ViewModel() {
             override fun onResponse(call: Call<ResponseMovie>, response: Response<ResponseMovie>) {
 
                 response.body()?.let {
-                    Log.d("VM", "Call")
-                    _moviesUpcoming.clear();
+                     Log.d("VM", "Call")
+                    _moviesUpcoming.clear()
                     _moviesUpcoming.addAll(responseToMovie(it))
                     moviesUpcoming.value = _moviesUpcoming
                 }
@@ -70,15 +72,46 @@ class MainViewModel(): ViewModel() {
             }
 
             override fun onFailure(call: Call<ResponseMovie>, t: Throwable) {
-                Log.d("VM", "Fail call")
+                 Log.d("VM", "Fail call")
             }
 
         })
     }
 
-    fun getSeenMovie() {
+    fun getInTheatresMovie(){
 
+        val api = RetrofitClient.client.create(MovieApi::class.java)
+
+        api.inTheatresMovies().enqueue(object : Callback<ResponseMovie> {
+
+            override fun onResponse(call: Call<ResponseMovie>, response: Response<ResponseMovie>) {
+
+                response.body()?.let {
+                     Log.d("VM", "Call")
+                    _moviesInTheatre.clear()
+                    _moviesInTheatre.addAll(responseToMovie((it)))
+                    moviesInTheatre.value = _moviesInTheatre
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseMovie>, t: Throwable) {
+                 Log.d("VM", "Fail call")
+            }
+
+        })
     }
+
+    fun getWatchlist(){
+        // TODO: a faire
+    }
+
+
+    fun getSeenMovie() {
+        // TODO: a faire
+    }
+
+
+
 
     // Translate the response from api to a Movie from my app
 

@@ -13,4 +13,10 @@ interface MovieApi {
                        @Query("language") language : String = "en-US",
                        @Query("page") page : Int = 1,
                        @Query("region") region : String = "FR") : Call<ResponseMovie>
+
+    @GET("movie/now_playing")
+    fun inTheatresMovies(@Query("api_key") apiKey : String = "c9e23b610c2f0c1040a493fc10ce5aaf",
+                         @Query("language") language : String = "en-US",
+                         @Query("page") page : Int = 1,
+                         @Query("region") region : String = "FR") : Call<ResponseMovie>
 }

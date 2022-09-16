@@ -1,14 +1,12 @@
 package be.bf.android.mymovies.lists.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import be.bf.android.mymovies.R
 import be.bf.android.mymovies.databinding.FragmentUpComingMoviesBinding
 import be.bf.android.mymovies.entities.Movie
 import be.bf.android.mymovies.lists.MainViewModel
@@ -16,11 +14,11 @@ import be.bf.android.mymovies.lists.MovieListAdapter
 
 /**
  * A simple [Fragment] subclass.
- * Use the [UpComingMoviesFragment.newInstance] factory method to
+ * Use the [UpcomingMoviesFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 
-class UpComingMoviesFragment : Fragment() {
+class UpcomingMoviesFragment : Fragment() {
 
     private var _binding : FragmentUpComingMoviesBinding? = null
     private val binding get() = _binding!!
@@ -43,6 +41,7 @@ class UpComingMoviesFragment : Fragment() {
 
         setupRv()
         bindViewModel()
+
         return binding.root
     }
 
@@ -73,7 +72,7 @@ class UpComingMoviesFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance() = UpComingMoviesFragment()
+        fun newInstance() = UpcomingMoviesFragment()
     }
 }
 
