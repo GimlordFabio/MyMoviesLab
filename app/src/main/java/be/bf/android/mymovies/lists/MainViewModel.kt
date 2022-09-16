@@ -17,6 +17,10 @@ import retrofit2.Response
 
 class MainViewModel(): ViewModel() {
 
+    companion object {
+        private const val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
+    }
+
     private val _moviesUpcoming = mutableListOf<Movie>()
     private val moviesUpcoming : MutableLiveData<List<Movie>> = MutableLiveData()
     val MoviesUpcoming : LiveData<List<Movie>>
@@ -57,6 +61,7 @@ class MainViewModel(): ViewModel() {
             override fun onResponse(call: Call<ResponseMovie>, response: Response<ResponseMovie>) {
 
                 response.body()?.let {
+                    Log.d("VM", "Call")
                     _moviesUpcoming.clear();
                     _moviesUpcoming.addAll(responseToMovie(it))
                     moviesUpcoming.value = _moviesUpcoming
@@ -65,7 +70,7 @@ class MainViewModel(): ViewModel() {
             }
 
             override fun onFailure(call: Call<ResponseMovie>, t: Throwable) {
-                TODO("Not yet implemented")
+                Log.d("VM", "Fail call")
             }
 
         })
@@ -89,8 +94,8 @@ class MainViewModel(): ViewModel() {
                 title = item.title,
                 rating = item.vote_average,
                 date = item.release_date,
-                imageV = item.poster_path,
-                imageH = item.backdrop_path,
+                imageV = IMAGE_URL + item.poster_path,
+                imageH = IMAGE_URL + item.backdrop_path,
                 overview = item.overview
 
             )
