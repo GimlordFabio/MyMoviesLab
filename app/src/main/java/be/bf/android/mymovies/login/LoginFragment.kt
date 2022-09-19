@@ -31,11 +31,11 @@ class LoginFragment : Fragment() {
     ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
 
-        binding.btnLoginRegister.setOnClickListener {
+        binding.btnLogfragRegister.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 
-        binding.btnLoginLogin.setOnClickListener() {
+        binding.btnLogfragLogin.setOnClickListener() {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
         }

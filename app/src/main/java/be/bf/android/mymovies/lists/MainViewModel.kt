@@ -102,12 +102,20 @@ class MainViewModel(): ViewModel() {
     }
 
     fun getWatchlist(){
-        // TODO: a faire
+        // TODO: a faire dans paramètres de ViewModel(ViewModel(movieDAO: MovieDAO))? ou dans companion object ?
+        // openReadable() ?
+
+        // _moviesWatchList = movieDAO.findAll()
+        // moviesWatchList.value = _moviesWatchList
     }
 
 
     fun getSeenMovie() {
-        // TODO: a faire
+        // TODO: a faire dans paramètres de ViewModel(ViewModel(movieDAO: MovieDAO))? ou dans companion object ?
+        // openReadable() ?
+
+        // _moviesSeen = movieDAO.findAll()
+        // moviesSeen.value = _moviesSeen
     }
 
 

@@ -13,7 +13,10 @@ import be.bf.android.mymovies.R
 import be.bf.android.mymovies.entities.Movie
 import com.bumptech.glide.Glide
 
-class MovieListAdapter(private val context : Context, private val movies : List<Movie>) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+class MovieListAdapter(private val context : Context,
+                       private val movies : List<Movie>,
+                       private val onClickListener : (movie : Movie) -> Unit) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
+
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
 
         val tvTitle : TextView = view.findViewById(R.id.tv_mi_titre)
@@ -21,6 +24,8 @@ class MovieListAdapter(private val context : Context, private val movies : List<
         val tvDate : TextView = view.findViewById(R.id.tv_mi_date)
         val imgMovie : ImageView = view.findViewById(R.id.img_mi_imgV)
     }
+
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
@@ -44,6 +49,10 @@ class MovieListAdapter(private val context : Context, private val movies : List<
         else if (movie.imageV == "https://image.tmdb.org/t/p/w500null") {
             holder.imgMovie.setImageResource(R.drawable.ic_launcher_background)
         }
+        holder.itemView.setOnClickListener {
+            onClickListener(movie)
+        }
+
     }
 
     override fun getItemCount(): Int {

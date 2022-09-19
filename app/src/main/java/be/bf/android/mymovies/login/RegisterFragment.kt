@@ -29,11 +29,11 @@ class RegisterFragment : Fragment() {
     ): View? {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
 
-        binding.btnRegisterLogin.setOnClickListener {
+        binding.btnRegfragLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
-        binding.btnRegisterRegister.setOnClickListener {
+        binding.btnRegfragRegister.setOnClickListener {
 
         }
 

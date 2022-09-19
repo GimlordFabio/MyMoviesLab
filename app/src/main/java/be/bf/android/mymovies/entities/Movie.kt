@@ -1,5 +1,6 @@
 package be.bf.android.mymovies.entities
 
+import java.io.Serializable
 import java.util.*
 
 data class Movie (
@@ -13,7 +14,7 @@ data class Movie (
     var overview: String,
     var seen: Int = 0,
     var userId: Int? = null,
-    var tagId: Int? = null){
+    var tagId: Int? = null) : Serializable {
 
 }
 
