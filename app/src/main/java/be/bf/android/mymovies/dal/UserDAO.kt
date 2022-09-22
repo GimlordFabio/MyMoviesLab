@@ -6,6 +6,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import be.bf.android.mymovies.entities.User
 import java.io.Closeable
+import java.security.KeyStore
 
 class UserDAO (private val context: Context): Closeable{
 
@@ -13,7 +14,7 @@ class UserDAO (private val context: Context): Closeable{
 
         const val CREATE_QUERY: String = "CREATE TABLE user(" +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                " username VARCHAR(50) NOT NULL UNIQUE)"
+                " username TEXT NOT NULL UNIQUE)"
 
         const val UPDATE_QUERY: String = "DROP TABLE user"
     }
@@ -44,6 +45,19 @@ class UserDAO (private val context: Context): Closeable{
         }
         return null
     }
+
+    fun findIfUserExist(username: String): Boolean {
+
+        val db = database
+        val query = "select * from user where username = ?"
+        val cursor = db.rawQuery(query, arrayOf(username))
+        val result = cursor.count > 0
+        cursor.close()
+        return result
+    }
+
+
+
 
     fun findAll(): List<User?> {
         var users: MutableList<User?> = ArrayList()

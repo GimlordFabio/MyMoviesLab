@@ -13,16 +13,16 @@ class MovieDAO (private val context: Context): Closeable {
 
         const val CREATE_QUERY: String = "CREATE TABLE movie(" +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                " title VARCHAR(50)," +
+                " title TEXT," +
                 " rating DOUBLE," +
-                " date VARCHAR(15)," +
-                " imageV VARCHAR(150)," +
-                " imageH VARCHAR(150)," +
-                " overview VARCHAR(150)," +
+                " date TEXT," +
+                " imageV TEXT," +
+                " imageH TEXT," +
+                " overview TEXT," +
                 " seen INTEGER," +
                 " userId INTEGER," +
-                " tagId INTEGER" +
-                " CONSTRAINT fk_user FOREIGN KEY (userId) REFERENCES user(id)" +
+                " tagId INTEGER," +
+                " CONSTRAINT fk_user FOREIGN KEY (userId) REFERENCES user(id)," +
                 " CONSTRAINT fk_tag FOREIGN KEY (tagId) REFERENCES tag(id))"
 
         const val UPDATE_QUERY: String = "DROP TABLE movie"

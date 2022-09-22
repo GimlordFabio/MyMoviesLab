@@ -14,7 +14,7 @@ class IconeDAO (private val context: Context): Closeable{
 
         const val CREATE_QUERY: String = "CREATE TABLE icone(" +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                " src VARCHAR(100)"
+                " src TEXT)"
 
         const val UPDATE_QUERY: String = "DROP TABLE icone"
     }

@@ -3,12 +3,11 @@ package be.bf.android.mymovies.lists.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import be.bf.android.mymovies.R
 import be.bf.android.mymovies.databinding.FragmentUpComingMoviesBinding
 import be.bf.android.mymovies.details.DetailsActivity
 import be.bf.android.mymovies.entities.Movie

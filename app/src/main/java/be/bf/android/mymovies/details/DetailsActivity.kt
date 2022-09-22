@@ -1,14 +1,21 @@
 package be.bf.android.mymovies.details
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import be.bf.android.mymovies.R
 import be.bf.android.mymovies.dal.MovieDAO
 import be.bf.android.mymovies.databinding.ActivityDetailsBinding
 import be.bf.android.mymovies.databinding.ActivityMainBinding
 import be.bf.android.mymovies.entities.Movie
+import be.bf.android.mymovies.login.LoginActivity
 import com.bumptech.glide.Glide
 
 class DetailsActivity : AppCompatActivity() {
@@ -34,7 +41,33 @@ class DetailsActivity : AppCompatActivity() {
         }
         binding.tvDaOverview.text = movie.overview
 
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_app_bar_home,menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        val preferences: SharedPreferences = getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
+
+        when (item.itemId) {
+            R.id.logout -> {
+
+                preferences.edit().clear().apply()
+
+                intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+
+                return true
+            }
+            else -> {
+                return super.onOptionsItemSelected(item)
+            }
+        }
 
     }
+
 }

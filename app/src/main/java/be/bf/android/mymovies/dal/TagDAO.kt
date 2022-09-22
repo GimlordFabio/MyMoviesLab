@@ -14,8 +14,8 @@ class TagDAO (private val context: Context): Closeable {
 
         val CREATE_QUERY: String = "CREATE TABLE tag(" +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                " tagName VARCHAR(50)," +
-                " tagColor VARCHAR(50)," +
+                " tagName TEXT," +
+                " tagColor TEXT," +
                 " iconId INTEGER," +
                 "CONSTRAINT fk_icon FOREIGN KEY (iconId) REFERENCES icon(id))"
 
