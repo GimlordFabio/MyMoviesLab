@@ -14,7 +14,7 @@ import be.bf.android.mymovies.entities.Movie
 import com.bumptech.glide.Glide
 
 class MovieListAdapter(private val context : Context,
-                       private val movies : List<Movie>,
+                       private var movies : List<Movie>,
                        private val onClickListener : (movie : Movie) -> Unit) : RecyclerView.Adapter<MovieListAdapter.ViewHolder>() {
 
     class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
@@ -57,6 +57,11 @@ class MovieListAdapter(private val context : Context,
 
     override fun getItemCount(): Int {
         return movies.size
+    }
+
+    fun update(newMovies : List<Movie>) {
+        this.movies = newMovies
+        notifyDataSetChanged()
     }
 
 }

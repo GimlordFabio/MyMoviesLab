@@ -1,8 +1,9 @@
 package be.bf.android.mymovies.login
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,12 +53,20 @@ class RegisterFragment : Fragment() {
 
             userDao.openWritable()
 
-            if(userDao.findIfUserExist(binding.etRegfragUsername.text.toString())) {
+            val user = userDao.findUserByUsername(binding.etRegfragUsername.text.toString())
+
+            if(user != null) {
                 // TODO: toast "User already exists, choose another Username plz "
             }
             else {
-                userDao.insert(User(null, binding.etRegfragUsername.text.toString()))
+                val preferences: SharedPreferences = requireContext().getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
+
+                val id = userDao.insert(User(null, binding.etRegfragUsername.text.toString()))
                 userDao.close()
+                with(preferences.edit()) {
+                    putInt("id", id.toInt())
+                    apply()
+                }
                 val intent : Intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
                 // TODO: "Logged in as (username)"

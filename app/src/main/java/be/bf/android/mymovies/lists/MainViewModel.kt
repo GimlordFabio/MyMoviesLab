@@ -14,9 +14,8 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 
-class MainViewModel(): ViewModel() {
+class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
 
     companion object {
         private const val IMAGE_URL = "https://image.tmdb.org/t/p/w500"
@@ -32,7 +31,7 @@ class MainViewModel(): ViewModel() {
     val MoviesInTheatre : LiveData<List<Movie>>
         get() = moviesInTheatre
 
-    private val _moviesWatchList = mutableListOf<Movie>()
+    private var _moviesWatchList = mutableListOf<Movie>()
     private val moviesWatchList : MutableLiveData<List<Movie>> = MutableLiveData()
     val MoviesWatchList : LiveData<List<Movie>>
         get() = moviesWatchList
@@ -48,8 +47,11 @@ class MainViewModel(): ViewModel() {
 
     init {
         viewModelScope.launch {
+
             getUpcomingMovie()
             getInTheatresMovie()
+            getWatchlist()
+            getSeenMovie()
         }
     }
 
@@ -102,20 +104,26 @@ class MainViewModel(): ViewModel() {
     }
 
     fun getWatchlist(){
-        // TODO: a faire dans paramètres de ViewModel(ViewModel(movieDAO: MovieDAO))? ou dans companion object ?
-        // openReadable() ?
 
-        // _moviesWatchList = movieDAO.findAll()
-        // moviesWatchList.value = _moviesWatchList
+        val movieWatchList = movieDao.findAllWatchList()
+
+        Log.d("VMMovieWatchList", movieWatchList.toString())
+
+        _moviesWatchList.clear()
+        _moviesWatchList.addAll(movieWatchList)
+
+        moviesWatchList.value = _moviesWatchList
     }
 
 
     fun getSeenMovie() {
-        // TODO: a faire dans paramètres de ViewModel(ViewModel(movieDAO: MovieDAO))? ou dans companion object ?
-        // openReadable() ?
 
-        // _moviesSeen = movieDAO.findAll()
-        // moviesSeen.value = _moviesSeen
+        val movieSeen = movieDao.findAllSeen()
+
+        _moviesSeen.clear()
+        _moviesSeen.addAll(movieSeen)
+
+        moviesSeen.value = _moviesSeen
     }
 
 

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import be.bf.android.mymovies.entities.Movie
 import java.io.Closeable
 
@@ -12,7 +13,7 @@ class MovieDAO (private val context: Context): Closeable {
     companion object{
 
         const val CREATE_QUERY: String = "CREATE TABLE movie(" +
-                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "id INTEGER NOT NULL PRIMARY KEY," +
                 " title TEXT," +
                 " rating DOUBLE," +
                 " date TEXT," +
@@ -21,9 +22,7 @@ class MovieDAO (private val context: Context): Closeable {
                 " overview TEXT," +
                 " seen INTEGER," +
                 " userId INTEGER," +
-                " tagId INTEGER," +
-                " CONSTRAINT fk_user FOREIGN KEY (userId) REFERENCES user(id)," +
-                " CONSTRAINT fk_tag FOREIGN KEY (tagId) REFERENCES tag(id))"
+                " CONSTRAINT fk_user FOREIGN KEY (userId) REFERENCES user(id))"
 
         const val UPDATE_QUERY: String = "DROP TABLE movie"
     }
@@ -51,9 +50,8 @@ class MovieDAO (private val context: Context): Closeable {
         val overviewColumn = cursor.getColumnIndex("overview")
         val seenColumn = cursor.getColumnIndex("seen")
         val userIDColumn = cursor.getColumnIndex("userId")
-        val tagIDColumn = cursor.getColumnIndex("tagId")
 
-        if (idColumn >= 0 && titleColumn >= 0 && ratingColumn >= 0 && dateColumn >= 0 && imageVColumn >= 0 && imageHColumn >= 0 && overviewColumn>= 0 && seenColumn>= 0 && userIDColumn >= 0 && tagIDColumn >= 0){
+        if (idColumn >= 0 && titleColumn >= 0 && ratingColumn >= 0 && dateColumn >= 0 && imageVColumn >= 0 && imageHColumn >= 0 && overviewColumn >= 0 && seenColumn >= 0 && userIDColumn >= 0){
 
             val id = cursor.getInt(idColumn)
             val title = cursor.getString(titleColumn)
@@ -64,22 +62,48 @@ class MovieDAO (private val context: Context): Closeable {
             val overview = cursor.getString(overviewColumn)
             val seen = cursor.getInt(seenColumn)
             val userId = cursor.getInt(userIDColumn)
-            val tagId = cursor.getInt(tagIDColumn)
 
-            return  Movie(id, title, rating, date, imageV, imageH, overview, seen, userId, tagId)
+            return  Movie(id, title, rating, date, imageV, imageH, overview, seen, userId)
         }
         return null
     }
 
-    fun findAll(): List<Movie?>{
+    fun findAllWatchList(): List<Movie>{
 
-        var movies: MutableList<Movie?> = ArrayList()
-        var cursor: Cursor = this.database.query("movie", null, null, null, null, null, null)
-        cursor.moveToFirst()
+        openReadable()
+
+        var movies: MutableList<Movie> = ArrayList()
+        // SELECT * FROM movie WHERE seen = 0
+        var cursor: Cursor = this.database.rawQuery("SELECT * FROM movie WHERE seen = 0", null)
+        val isNotEmpty = cursor.moveToFirst()
+
+        if (!isNotEmpty) return movies
 
         do {
             val movie = getMovieFromCursor(cursor)
-            movies.add(movie)
+            if (movie != null) {
+                movies.add(movie)
+            }
+
+        }while (cursor.moveToNext())
+
+        return movies
+    }
+
+    fun findAllSeen(): List<Movie>{
+
+        openReadable()
+
+        var movies: MutableList<Movie> = ArrayList()
+        // SELECT * FROM movie WHERE seen = 1
+        var cursor: Cursor = this.database.query("movie", null, "seen = ?", arrayOf("1"), null, null, null)
+        val isNotEmpty = cursor.moveToFirst()
+        if (!isNotEmpty) return movies
+        do {
+            val movie = getMovieFromCursor(cursor)
+            if (movie != null) {
+                movies.add(movie)
+            }
 
         }while (cursor.moveToNext())
 
@@ -88,7 +112,10 @@ class MovieDAO (private val context: Context): Closeable {
 
     fun insert (movie: Movie): Long{
 
+        openWritable()
+
         var cv = ContentValues()
+        cv.put("id", movie.id)
         cv.put("title", movie.title)
         cv.put("rating", movie.rating)
         cv.put("date", movie.date)
@@ -97,14 +124,16 @@ class MovieDAO (private val context: Context): Closeable {
         cv.put("overview", movie.overview)
         cv.put("seen", movie.seen)
         cv.put("userId", movie.userId)
-        cv.put("tagId", movie.tagId)
+
 
         // Rappel : la methode insert retourne toujours l id de l item creer
 
-        return database.insert("title", null, cv)
+        return database.insert("movie", null, cv)
     }
 
-    fun upgrade (movie: Movie): Int{
+    fun update (movie: Movie): Int{
+
+        openWritable()
 
         var id: Int = movie.id!!
         var cv = ContentValues()
@@ -117,7 +146,7 @@ class MovieDAO (private val context: Context): Closeable {
         cv.put("overview", movie.overview)
         cv.put("seen", movie.seen)
         cv.put("userId", movie.userId)
-        cv.put("tagId", movie.tagId)
+
 
         return database.update("movie", cv, "id= ?", arrayOf(id.toString()))
     }

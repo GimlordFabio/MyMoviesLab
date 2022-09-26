@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import be.bf.android.mymovies.R
 import be.bf.android.mymovies.dal.UserDAO
 import be.bf.android.mymovies.databinding.FragmentLoginBinding
-import be.bf.android.mymovies.entities.User
 import be.bf.android.mymovies.lists.MainActivity
 
 /**
@@ -43,12 +43,6 @@ class LoginFragment : Fragment() {
         userDAO = UserDAO(requireContext())
 
         val preferences: SharedPreferences = requireContext().getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
-        val userName : String? = preferences.getString(getString(R.string.user_pref), null)
-
-        if (userName != null) {
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            startActivity(intent)
-        }
 
         binding.btnLogfragRegister.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
@@ -56,16 +50,14 @@ class LoginFragment : Fragment() {
 
         binding.btnLogfragLogin.setOnClickListener {
 
-            // TODO: a faire apres avoir fait le register fragment
-
             if (binding.etLogfragUsername.text.toString() != "") {
 
                 // TODO: "You must enter a username to be able to login"
                 userDAO.openWritable()
-                if (userDAO.findIfUserExist(binding.etLogfragUsername.text.toString())) {
+                val user = userDAO.findUserByUsername(binding.etLogfragUsername.text.toString())
+                if (user != null) {
 
                     if (binding.cbLogfragRm.isChecked) {
-
                         with(preferences.edit()) {
                             putString(
                                 getString(R.string.user_pref),
@@ -73,6 +65,10 @@ class LoginFragment : Fragment() {
                             )
                             apply()
                         }
+                    }
+                    with(preferences.edit()) {
+                        user.id?.let { it1 -> putInt("id", it1) }
+                        apply()
                     }
                     // Voyage vers l'activité
                     val intent = Intent(requireContext(), MainActivity::class.java)
@@ -90,6 +86,27 @@ class LoginFragment : Fragment() {
 
         return binding.root
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val preferences: SharedPreferences = requireContext().getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
+        val userName : String? = preferences.getString(getString(R.string.user_pref), null)
+
+        if (userName != null) {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("LoginFrag", "Puase")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("LoginFrag", "Stop")
     }
 
     override fun onDestroyView() {

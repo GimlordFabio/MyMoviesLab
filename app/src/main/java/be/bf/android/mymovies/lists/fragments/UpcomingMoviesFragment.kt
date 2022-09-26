@@ -12,6 +12,7 @@ import be.bf.android.mymovies.databinding.FragmentUpComingMoviesBinding
 import be.bf.android.mymovies.details.DetailsActivity
 import be.bf.android.mymovies.entities.Movie
 import be.bf.android.mymovies.lists.MainViewModel
+import be.bf.android.mymovies.lists.MainViewModelFactory
 import be.bf.android.mymovies.lists.MovieListAdapter
 
 /**
@@ -25,7 +26,7 @@ class UpcomingMoviesFragment : Fragment() {
     private var _binding : FragmentUpComingMoviesBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel : MainViewModel by activityViewModels()
+    private val viewModel : MainViewModel by activityViewModels { MainViewModelFactory(requireContext()) }
 
     private lateinit var adapter : MovieListAdapter
 

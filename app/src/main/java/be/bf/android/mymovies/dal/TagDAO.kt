@@ -41,7 +41,7 @@ class TagDAO (private val context: Context): Closeable {
         val tagColorColumn = cursor.getColumnIndex("tagColor")
         val iconIdColumn = cursor.getColumnIndex("iconId")
 
-        if(idColumn >= 0 && tagNameColumn >= 0 && tagColorColumn >= 0 && iconIdColumn >= 0){
+        if(idColumn > 0 && tagNameColumn > 0 && tagColorColumn > 0 && iconIdColumn > 0){
 
             val id = cursor.getInt(idColumn)
             val tagName = cursor.getString(tagNameColumn)

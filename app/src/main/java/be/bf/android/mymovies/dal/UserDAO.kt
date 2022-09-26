@@ -36,7 +36,7 @@ class UserDAO (private val context: Context): Closeable{
         val idColumn = cursor.getColumnIndex("id")
         val usernameColumn = cursor.getColumnIndex("username")
 
-        if (idColumn >= 0 && usernameColumn >= 0) {
+        if (idColumn > 0 && usernameColumn > 0) {
 
             val id = cursor.getInt(idColumn)
             val username = cursor.getString(usernameColumn)
@@ -46,14 +46,22 @@ class UserDAO (private val context: Context): Closeable{
         return null
     }
 
-    fun findIfUserExist(username: String): Boolean {
+    fun findUserByUsername(username: String): User? {
 
         val db = database
         val query = "select * from user where username = ?"
         val cursor = db.rawQuery(query, arrayOf(username))
-        val result = cursor.count > 0
+        cursor.moveToFirst()
+        val users = mutableListOf<User?>()
+        do {
+            val user = getUserFromCursor(cursor)
+            users.add(user)
+        } while (cursor.moveToNext())
         cursor.close()
-        return result
+        if (users.size <= 0) {
+            return null
+        }
+        return users[0]
     }
 
 

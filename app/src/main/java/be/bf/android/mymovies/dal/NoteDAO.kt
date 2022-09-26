@@ -43,7 +43,7 @@ class NoteDAO (private val context: Context): Closeable{
         val movieIdColumn = cursor.getColumnIndex("movieId")
         val userIdColumn = cursor.getColumnIndex("userId")
 
-        if( idColumn >=0 && noteContentColumn >=0 && movieIdColumn >=0 && userIdColumn >=0){
+        if( idColumn > 0 && noteContentColumn > 0 && movieIdColumn > 0 && userIdColumn > 0){
 
             val id = cursor.getInt(idColumn)
             val noteContent = cursor.getString(noteContentColumn)

@@ -36,7 +36,7 @@ class IconeDAO (private val context: Context): Closeable{
         val idColumn = cursor.getColumnIndex("id")
         val srcColumn = cursor.getColumnIndex("src")
 
-        if (idColumn >= 0 && srcColumn <= 0){
+        if (idColumn > 0 && srcColumn > 0){
 
             val id = cursor.getInt(idColumn)
             val src = cursor.getString(srcColumn)
