@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -35,6 +36,22 @@ class DetailsActivity : AppCompatActivity() {
 
         val movie = intent.getSerializableExtra("movie") as Movie
 
+        val seen = movie.seen
+
+        when(seen) {
+
+            0 -> {
+                binding.tvDaAddWatch.visibility = View.INVISIBLE
+                binding.ivDaLeftDel.visibility = View.VISIBLE
+            }
+            1 -> {
+                binding.tvDaAddSeen.visibility = View.INVISIBLE
+                binding.ivDaRightDel.visibility = View.VISIBLE
+                binding.ivDaSeenIcon.visibility = View.VISIBLE
+                binding.ivDaNotSeenIcon.visibility = View.INVISIBLE
+            }
+        }
+
         movieDAO = MovieDAO(this)
 
         binding.tvDaTitle.text = movie.title
@@ -52,6 +69,15 @@ class DetailsActivity : AppCompatActivity() {
         binding.iconDvBack.setOnClickListener {
             finish()
         }
+
+        binding.tvDaScreenings.setOnClickListener{
+
+            var url = titleToUrl(movie.title)
+
+            startActivity(Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(url) })
+
+        }
+
 
         binding.tvDaAddWatch.setOnClickListener{
 
@@ -105,6 +131,14 @@ class DetailsActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    fun titleToUrl(title: String): String{
+
+        val title = title.lowercase().replace(" ", "-")
+        val url = "https://www.cinenews.be/fr/films/" + title
+
+        return url
     }
 
 

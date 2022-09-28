@@ -12,7 +12,7 @@ data class Movie (
     var imageV: String?,
     var imageH: String?,
     var overview: String,
-    var seen: Int = 0,
+    var seen: Int? = null,
     var userId: Int? = null) : Serializable {
 
 }

@@ -67,13 +67,11 @@ class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
                     _moviesUpcoming.addAll(responseToMovie(it))
                     moviesUpcoming.value = _moviesUpcoming
                 }
-
             }
 
             override fun onFailure(call: Call<ResponseMovie>, t: Throwable) {
                  Log.d("VM", "Fail call")
             }
-
         })
     }
 
@@ -96,7 +94,6 @@ class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
             override fun onFailure(call: Call<ResponseMovie>, t: Throwable) {
                  Log.d("VM", "Fail call")
             }
-
         })
     }
 
