@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import be.bf.android.mymovies.R
 import be.bf.android.mymovies.dal.UserDAO
@@ -47,16 +49,23 @@ class RegisterFragment : Fragment() {
 
             if (binding.etRegfragUsername.text.toString() == ""){
 
-                // TODO: toast "Choose a username plz"
+                val toastEmpty: Toast = Toast.makeText(requireContext(),"Choose a username plz", Toast.LENGTH_LONG)
+                toastEmpty.show()
+
                 return@setOnClickListener
             }
 
+            userDao.openReadable()
             userDao.openWritable()
 
             val user = userDao.findUserByUsername(binding.etRegfragUsername.text.toString())
 
+            Log.d("RegisterFrag", user.toString())
+
             if(user != null) {
-                // TODO: toast "User already exists, choose another Username plz "
+
+                val toastAlreadyExist: Toast = Toast.makeText(requireContext(),"User already exists, choose another Username plz", Toast.LENGTH_LONG)
+                toastAlreadyExist.show()
             }
             else {
                 val preferences: SharedPreferences = requireContext().getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
@@ -69,7 +78,9 @@ class RegisterFragment : Fragment() {
                 }
                 val intent : Intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
-                // TODO: "Logged in as (username)"
+
+                val toastLoggedIn: Toast = Toast.makeText(requireContext(),"Logged in as ${binding.etRegfragUsername.text}", Toast.LENGTH_LONG)
+                toastLoggedIn.show()
             }
             userDao.close()
         }

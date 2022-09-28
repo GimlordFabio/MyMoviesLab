@@ -24,7 +24,7 @@ class MovieDAO (private val context: Context): Closeable {
                 " userId INTEGER," +
                 " CONSTRAINT fk_user FOREIGN KEY (userId) REFERENCES user(id))"
 
-        const val UPDATE_QUERY: String = "DROP TABLE movie"
+        const val UPDATE_QUERY: String = "DROP TABLE IF EXISTS movie"
     }
 
     private val helper: DbHelper = DbHelper(context)
@@ -68,19 +68,20 @@ class MovieDAO (private val context: Context): Closeable {
         return null
     }
 
-    fun findAllWatchList(): List<Movie>{
+    fun findAllWatchListByUser(userId : Int): List<Movie>{
 
         openReadable()
 
         var movies: MutableList<Movie> = ArrayList()
-        // SELECT * FROM movie WHERE seen = 0
-        var cursor: Cursor = this.database.rawQuery("SELECT * FROM movie WHERE seen = 0", null)
+
+        var cursor: Cursor = this.database.rawQuery("SELECT * FROM movie WHERE seen = 0 AND userId = ?", arrayOf(userId.toString()))
         val isNotEmpty = cursor.moveToFirst()
 
         if (!isNotEmpty) return movies
 
         do {
             val movie = getMovieFromCursor(cursor)
+
             if (movie != null) {
                 movies.add(movie)
             }
@@ -90,17 +91,20 @@ class MovieDAO (private val context: Context): Closeable {
         return movies
     }
 
-    fun findAllSeen(): List<Movie>{
+    fun findAllSeenByUser(userId : Int): List<Movie>{
 
         openReadable()
 
         var movies: MutableList<Movie> = ArrayList()
         // SELECT * FROM movie WHERE seen = 1
-        var cursor: Cursor = this.database.query("movie", null, "seen = ?", arrayOf("1"), null, null, null)
+        var cursor: Cursor = this.database.rawQuery("SELECT * FROM movie WHERE seen = 1 AND userId = ?", arrayOf(userId.toString()))
         val isNotEmpty = cursor.moveToFirst()
+
         if (!isNotEmpty) return movies
+
         do {
             val movie = getMovieFromCursor(cursor)
+
             if (movie != null) {
                 movies.add(movie)
             }
@@ -128,7 +132,7 @@ class MovieDAO (private val context: Context): Closeable {
 
         // Rappel : la methode insert retourne toujours l id de l item creer
 
-        return database.insert("movie", null, cv)
+        return database.insertWithOnConflict("movie", null, cv, SQLiteDatabase.CONFLICT_REPLACE)
     }
 
     fun update (movie: Movie): Int{
@@ -138,6 +142,7 @@ class MovieDAO (private val context: Context): Closeable {
         var id: Int = movie.id!!
         var cv = ContentValues()
 
+        cv.put("id",movie.id)
         cv.put("title", movie.title)
         cv.put("rating", movie.rating)
         cv.put("date", movie.date)

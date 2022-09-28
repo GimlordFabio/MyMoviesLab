@@ -47,11 +47,8 @@ class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
 
     init {
         viewModelScope.launch {
-
             getUpcomingMovie()
             getInTheatresMovie()
-            getWatchlist()
-            getSeenMovie()
         }
     }
 
@@ -103,9 +100,9 @@ class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
         })
     }
 
-    fun getWatchlist(){
+    fun getWatchlist(idUser : Int){
 
-        val movieWatchList = movieDao.findAllWatchList()
+        val movieWatchList = movieDao.findAllWatchListByUser(idUser)
 
         Log.d("VMMovieWatchList", movieWatchList.toString())
 
@@ -116,9 +113,9 @@ class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
     }
 
 
-    fun getSeenMovie() {
+    fun getSeenMovie(idUser : Int) {
 
-        val movieSeen = movieDao.findAllSeen()
+        val movieSeen = movieDao.findAllSeenByUser(idUser)
 
         _moviesSeen.clear()
         _moviesSeen.addAll(movieSeen)

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import be.bf.android.mymovies.entities.User
 import java.io.Closeable
 import java.security.KeyStore
@@ -16,7 +17,7 @@ class UserDAO (private val context: Context): Closeable{
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 " username TEXT NOT NULL UNIQUE)"
 
-        const val UPDATE_QUERY: String = "DROP TABLE user"
+        const val UPDATE_QUERY: String = "DROP TABLE IF EXISTS user"
     }
 
     private val helper: DbHelper = DbHelper(context)
@@ -36,32 +37,26 @@ class UserDAO (private val context: Context): Closeable{
         val idColumn = cursor.getColumnIndex("id")
         val usernameColumn = cursor.getColumnIndex("username")
 
-        if (idColumn > 0 && usernameColumn > 0) {
+        val id = cursor.getInt(idColumn)
+        val username = cursor.getString(usernameColumn)
 
-            val id = cursor.getInt(idColumn)
-            val username = cursor.getString(usernameColumn)
-
-            return User(id, username)
-        }
-        return null
+        return User(id, username)
     }
 
     fun findUserByUsername(username: String): User? {
+        Log.d("UserDAO", username)
 
         val db = database
         val query = "select * from user where username = ?"
         val cursor = db.rawQuery(query, arrayOf(username))
-        cursor.moveToFirst()
         val users = mutableListOf<User?>()
-        do {
+        while (cursor.moveToNext()) {
             val user = getUserFromCursor(cursor)
             users.add(user)
-        } while (cursor.moveToNext())
-        cursor.close()
-        if (users.size <= 0) {
-            return null
         }
-        return users[0]
+        Log.d("UserDAO", users.toString())
+        cursor.close()
+        return if (users.size > 0) return users[0] else return null
     }
 
 

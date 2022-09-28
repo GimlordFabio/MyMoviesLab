@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import be.bf.android.mymovies.R
 import be.bf.android.mymovies.dal.UserDAO
@@ -52,8 +53,7 @@ class LoginFragment : Fragment() {
 
             if (binding.etLogfragUsername.text.toString() != "") {
 
-                // TODO: "You must enter a username to be able to login"
-                userDAO.openWritable()
+                userDAO.openReadable()
                 val user = userDAO.findUserByUsername(binding.etLogfragUsername.text.toString())
                 if (user != null) {
 
@@ -66,6 +66,7 @@ class LoginFragment : Fragment() {
                             apply()
                         }
                     }
+
                     with(preferences.edit()) {
                         user.id?.let { it1 -> putInt("id", it1) }
                         apply()
@@ -73,14 +74,20 @@ class LoginFragment : Fragment() {
                     // Voyage vers l'activité
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
+
+                    val toastLoggedIn: Toast = Toast.makeText(requireContext(),"Logged in as ${binding.etLogfragUsername.text}", Toast.LENGTH_LONG)
+                    toastLoggedIn.show()
+
                 }
                 else {
-                    // TODO: toast "User does Not exist, plz go to register"
+                    val toastUserNotExist: Toast = Toast.makeText(requireContext(), "User does Not exist, plz go to register", Toast.LENGTH_LONG)
+                    toastUserNotExist.show()
                 }
                 userDAO.close()
             }
             else {
-                // TODO: toast "Enter a valid username or plz go to register"
+                val toastEmpty: Toast = Toast.makeText(requireContext(),"You must enter a username to be able to login", Toast.LENGTH_LONG)
+                toastEmpty.show()
             }
         }
 

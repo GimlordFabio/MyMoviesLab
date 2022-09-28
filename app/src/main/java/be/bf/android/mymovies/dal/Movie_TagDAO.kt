@@ -11,7 +11,7 @@ class Movie_TagDAO (private val context: Context): Closeable {
     companion object{
 
         const val CREATE_QUERY: String = "CREATE TABLE movie_tag(movieId INTEGER NOT NULL, tagId INTEGER NOT NULL, CONSTRAINT PK_movie_tag PRIMARY KEY(movieId, tagId))"
-        const val UPDATE_QUERY: String = "DROP TABLE movie_tag"
+        const val UPDATE_QUERY: String = "DROP TABLE IF EXISTS movie_tag"
 
     }
 

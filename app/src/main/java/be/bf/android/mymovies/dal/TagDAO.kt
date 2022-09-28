@@ -19,7 +19,7 @@ class TagDAO (private val context: Context): Closeable {
                 " iconId INTEGER," +
                 "CONSTRAINT fk_icon FOREIGN KEY (iconId) REFERENCES icon(id))"
 
-        val UPDATE_QUERY: String = "DROP TABLE tag"
+        val UPDATE_QUERY: String = "DROP TABLE IF EXISTS tag"
     }
 
     private val helper: DbHelper = DbHelper(context)

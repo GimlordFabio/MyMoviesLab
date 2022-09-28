@@ -19,7 +19,7 @@ class NoteDAO (private val context: Context): Closeable{
                 " CONSTRAINT fk_movie FOREIGN KEY (movieId) REFERENCES movie(id),"+
                 " CONSTRAINT fk_user FOREIGN KEY (userId) REFERENCES user(id))"
 
-        const val UPDATE_QUERY: String = "DROP TABLE note"
+        const val UPDATE_QUERY: String = "DROP TABLE IF EXISTS note"
 
 
     }

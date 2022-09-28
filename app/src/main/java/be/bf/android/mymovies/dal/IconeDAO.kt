@@ -16,7 +16,7 @@ class IconeDAO (private val context: Context): Closeable{
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 " src TEXT)"
 
-        const val UPDATE_QUERY: String = "DROP TABLE icone"
+        const val UPDATE_QUERY: String = "DROP TABLE IF EXISTS icone"
     }
 
     private val helper: DbHelper = DbHelper(context)

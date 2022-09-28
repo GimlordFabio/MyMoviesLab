@@ -1,7 +1,10 @@
 package be.bf.android.mymovies.lists.fragments
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -37,7 +40,6 @@ class SeenFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -63,22 +65,31 @@ class SeenFragment : Fragment() {
             intent.putExtra("movie", it)
             startActivity(intent)
         }
-
-
+        binding.rcSeen.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rcSeen.adapter = adapter
     }
 
 
     private fun bindViewModel() {
 
         viewModel.MoviesSeen.observe(viewLifecycleOwner){
+            Log.d("SL", it.toString())
             this.movies.clear()
             this.movies.addAll(it)
             adapter.notifyDataSetChanged()
         }
 
-        binding.rcSeen.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rcSeen.adapter = adapter
+
+    }
+
+    override fun onResume() {
+
+        super.onResume()
+        val preferences: SharedPreferences = requireContext().getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
+        val userId = preferences.getInt("id", 0)
+
+        viewModel.getSeenMovie(userId)
     }
 
     override fun onDestroyView() {

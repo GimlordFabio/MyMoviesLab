@@ -55,11 +55,10 @@ class DetailsActivity : AppCompatActivity() {
 
         binding.tvDaAddWatch.setOnClickListener{
 
-            val prefs = getPreferences(0)
-            val iduser = prefs.getInt("id", 0)
-
+            val preferences: SharedPreferences = this.getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
+            val id = preferences.getInt("id", 0)
             movie.seen = 0
-            movie.userId = iduser // SharedPreferences
+            movie.userId = id // SharedPreferences
 
             movieDAO.insert(movie)
             movieDAO.close()
@@ -67,14 +66,11 @@ class DetailsActivity : AppCompatActivity() {
         }
         binding.tvDaAddSeen.setOnClickListener{
 
-            val prefs = getPreferences(0)
-            val iduser = prefs.getInt("id", 0)
-
-
+            val preferences: SharedPreferences = this.getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
+            val id = preferences.getInt("id", 0)
 
             movie.seen = 1
-            movie.userId = iduser // SharedPreferences
-
+            movie.userId = id // SharedPreferences
 
 
             movieDAO.insert(movie)
