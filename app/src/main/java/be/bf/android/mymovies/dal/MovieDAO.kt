@@ -114,6 +114,28 @@ class MovieDAO (private val context: Context): Closeable {
         return movies
     }
 
+    fun findOneMovieByUser(userId : Int, movieId : Int) : Movie? {
+        openReadable()
+
+        var movies: MutableList<Movie> = ArrayList()
+        // SELECT * FROM movie WHERE seen = 1
+        var cursor: Cursor = this.database.rawQuery("SELECT * FROM movie WHERE userId = ? AND id = ?", arrayOf(userId.toString(), movieId.toString()))
+        val isNotEmpty = cursor.moveToFirst()
+
+        if (!isNotEmpty) return null
+
+        do {
+            val movie = getMovieFromCursor(cursor)
+
+            if (movie != null) {
+                movies.add(movie)
+            }
+
+        }while (cursor.moveToNext())
+
+        return movies[0]
+    }
+
     fun insert (movie: Movie): Long{
 
         openWritable()
@@ -154,6 +176,12 @@ class MovieDAO (private val context: Context): Closeable {
 
 
         return database.update("movie", cv, "id= ?", arrayOf(id.toString()))
+    }
+
+    fun delete(movieId : Int): Int {
+        openWritable()
+
+        return database.delete("movie", "id = ?", arrayOf(movieId.toString()))
     }
 
 

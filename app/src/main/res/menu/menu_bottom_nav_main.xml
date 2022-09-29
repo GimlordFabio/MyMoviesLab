@@ -5,11 +5,13 @@
         android:id="@+id/upComingMoviesFragment"
         android:enabled="true"
         android:title="Upcoming"
+        android:icon="@drawable/ic_upcoming"
         />
 
     <item
         android:id="@+id/inTheatresFragment"
         android:enabled="true"
+        android:icon="@drawable/theater"
         android:title="In Theatre"
         />
 
@@ -17,12 +19,14 @@
         android:id="@+id/watchlistFragment"
         android:enabled="true"
         android:title="Watchlist"
+        android:icon="@drawable/watchlist"
         />
 
     <item
         android:id="@+id/seenFragment"
         android:enabled="true"
         android:title="Seen"
+        android:icon="@drawable/seenlist"
         />
 
 

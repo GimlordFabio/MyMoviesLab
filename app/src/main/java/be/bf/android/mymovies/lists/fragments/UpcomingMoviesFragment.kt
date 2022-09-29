@@ -7,6 +7,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import be.bf.android.mymovies.R
 import be.bf.android.mymovies.databinding.FragmentUpComingMoviesBinding
 import be.bf.android.mymovies.details.DetailsActivity
@@ -59,6 +60,15 @@ class UpcomingMoviesFragment : Fragment() {
         binding.rcUpcoming.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rcUpcoming.adapter = adapter
+        binding.rcUpcoming.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (recyclerView.canScrollVertically(1)) {
+                    Log.d("Intheatrefrag", "End of RV")
+                }
+            }
+        })
 
     }
 

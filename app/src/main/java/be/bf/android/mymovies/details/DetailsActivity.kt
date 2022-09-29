@@ -34,11 +34,25 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        movieDAO = MovieDAO(this)
         val movie = intent.getSerializableExtra("movie") as Movie
 
-        val seen = movie.seen
+        if (movie.seen == null) {
 
-        when(seen) {
+            val preferences: SharedPreferences = this.getSharedPreferences("userSharedPref", Context.MODE_PRIVATE)
+            val id = preferences.getInt("id", 0)
+
+            val currentMovie = movieDAO.findOneMovieByUser(id, movie.id)
+
+            Log.d("DetailsActivity", currentMovie.toString())
+
+            if (currentMovie != null) {
+                movie.seen = currentMovie.seen
+                Log.d("DetailActivity", movie.seen.toString())
+            }
+        }
+
+        when(movie.seen) {
 
             0 -> {
                 binding.tvDaAddWatch.visibility = View.INVISIBLE
@@ -52,7 +66,6 @@ class DetailsActivity : AppCompatActivity() {
             }
         }
 
-        movieDAO = MovieDAO(this)
 
         binding.tvDaTitle.text = movie.title
         binding.tvDaDate.text = movie.date
@@ -89,6 +102,12 @@ class DetailsActivity : AppCompatActivity() {
             movieDAO.insert(movie)
             movieDAO.close()
 
+            binding.tvDaAddWatch.visibility = View.INVISIBLE
+            binding.ivDaLeftDel.visibility = View.VISIBLE
+
+            binding.tvDaAddSeen.visibility = View.VISIBLE
+            binding.ivDaRightDel.visibility = View.INVISIBLE
+
         }
         binding.tvDaAddSeen.setOnClickListener{
 
@@ -101,6 +120,26 @@ class DetailsActivity : AppCompatActivity() {
 
             movieDAO.insert(movie)
             movieDAO.close()
+
+            binding.tvDaAddSeen.visibility = View.INVISIBLE
+            binding.ivDaRightDel.visibility = View.VISIBLE
+
+            binding.tvDaAddWatch.visibility = View.VISIBLE
+            binding.ivDaLeftDel.visibility = View.INVISIBLE
+        }
+
+        binding.ivDaLeftDel.setOnClickListener {
+            movieDAO.delete(movie.id)
+
+            binding.tvDaAddWatch.visibility = View.VISIBLE
+            binding.ivDaLeftDel.visibility = View.INVISIBLE
+        }
+
+        binding.ivDaRightDel.setOnClickListener {
+            movieDAO.delete(movie.id)
+
+            binding.tvDaAddSeen.visibility = View.VISIBLE
+            binding.ivDaRightDel.visibility = View.INVISIBLE
         }
 
 
@@ -140,8 +179,6 @@ class DetailsActivity : AppCompatActivity() {
 
         return url
     }
-
-
 
 
 
