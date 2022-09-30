@@ -23,6 +23,10 @@ import be.bf.android.mymovies.lists.MainActivity
 import be.bf.android.mymovies.login.LoginActivity
 import com.bumptech.glide.Glide
 
+
+/**
+ * Activity that manages each movie details
+ */
 class DetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailsBinding

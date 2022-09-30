@@ -15,6 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
 
     companion object {
@@ -52,18 +53,21 @@ class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
         }
     }
 
-
-    fun getUpcomingMovie() {
+    /**
+     * Function which make an api call to get upcoming movie and update the mutable livedata
+     *
+     * @param page
+     */
+    fun getUpcomingMovie(page : Int = 1) {
 
         val api = RetrofitClient.client.create(MovieApi::class.java)
 
-        api.upcomingMovies().enqueue(object : Callback<ResponseMovie> {
+        api.upcomingMovies(page = page).enqueue(object : Callback<ResponseMovie> {
 
             override fun onResponse(call: Call<ResponseMovie>, response: Response<ResponseMovie>) {
 
                 response.body()?.let {
                      Log.d("VM", "Call")
-                    _moviesUpcoming.clear()
                     _moviesUpcoming.addAll(responseToMovie(it))
                     moviesUpcoming.value = _moviesUpcoming
                 }
@@ -75,17 +79,16 @@ class MainViewModel(private val movieDao : MovieDAO): ViewModel() {
         })
     }
 
-    fun getInTheatresMovie(){
+    fun getInTheatresMovie(page : Int = 1){
 
         val api = RetrofitClient.client.create(MovieApi::class.java)
 
-        api.inTheatresMovies().enqueue(object : Callback<ResponseMovie> {
+        api.inTheatresMovies(page = page).enqueue(object : Callback<ResponseMovie> {
 
             override fun onResponse(call: Call<ResponseMovie>, response: Response<ResponseMovie>) {
 
                 response.body()?.let {
                      Log.d("VM", "Call")
-                    _moviesInTheatre.clear()
                     _moviesInTheatre.addAll(responseToMovie((it)))
                     moviesInTheatre.value = _moviesInTheatre
                 }

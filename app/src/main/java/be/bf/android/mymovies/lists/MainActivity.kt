@@ -15,6 +15,10 @@ import be.bf.android.mymovies.R
 import be.bf.android.mymovies.databinding.ActivityMainBinding
 import be.bf.android.mymovies.login.LoginActivity
 
+/**
+ * Activity that manages the 4 movie list fragments
+ */
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

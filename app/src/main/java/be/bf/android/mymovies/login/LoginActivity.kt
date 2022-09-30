@@ -5,6 +5,10 @@ import android.os.Bundle
 import be.bf.android.mymovies.R
 import be.bf.android.mymovies.entities.User
 
+
+/**
+ * Activity that manages the login and register fragments
+ */
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

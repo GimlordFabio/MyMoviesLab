@@ -33,6 +33,8 @@ class UpcomingMoviesFragment : Fragment() {
 
     private val movies : MutableList<Movie> = mutableListOf()
 
+    private var page : Int = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -64,8 +66,9 @@ class UpcomingMoviesFragment : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
 
-                if (recyclerView.canScrollVertically(1)) {
-                    Log.d("Intheatrefrag", "End of RV")
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    page++
+                    viewModel.getUpcomingMovie(page)
                 }
             }
         })
